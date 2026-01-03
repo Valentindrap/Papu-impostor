@@ -18,7 +18,8 @@ function resetGame() {
     clearInterval(debateTimer);
 
     // 2. Resetear variables de estado del juego
-    game = { list: [], imp: 0, cit: 0, word: null, votes: {}, ended: false };
+    // - Actualizar el estado inicial del juego
+    game = { list: [], imp: 0, cit: 0, word: null, votes: {}, ended: false, noHints: false };
     idx = 0;
     voterIdx = 0;
 
@@ -172,6 +173,35 @@ const packs = {
             { w: "Tengo miedo", h: "" },
             { w: "El pana miguel", h: "" },
             { w: "Loquendo", h: "" }
+        ]
+    },
+
+    De_Pico: {
+        icon: "📌",
+        label: "Personajes De General Pico",
+        words: [
+            { w: "Tizi Pavarin", h: "" },
+            { w: "Agus Casado", h: "" },
+            { w: "Agustin Suarez", h: "" },
+            { w: "Ema Tissonne", h: "" },
+            { w: "Bautista Fernandez", h: "" },
+            { w: "Valentin Drapanti", h: "" },
+            { w: "Yahir Zapata", h: "" },
+            { w: "Jose Etcheverry", h: "" },
+            { w: "Franco Drapante", h: "" },
+            { w: "Nahuel Schmidt (Dj NAHUE S)", h: "" },
+            { w: "Matias Casado", h: "" },
+            { w: "Ana Alegre", h: "" },
+            { w: "Juli Storm", h: "" },
+            { w: "Agustin Rossetto (Sugaplux)", h: "" },
+            { w: "Benja Rojas", h: "" },
+            { w: "Francisco Pansa", h: "" },
+            { w: "Bauti Hayland", h: "" },
+            { w: "Tania Hernandez", h: "" },
+            { w: "Matute (Buenos Aires)", h: "" },
+            { w: "Alvaro Becerra (Sobrino Yahir)", h: "" },
+            { w: "El Rey Poppy", h: "" },
+            { w: "Angie Zapata", h: "" },
         ]
     },
 
@@ -1394,6 +1424,8 @@ function removePlayer(i) {
 function startGame() {
     const ic = parseInt(document.getElementById('imp-count').value);
     const hasComplice = document.getElementById('complice-select').value === '1';
+    // Leer si el modo sin pistas está activo antes de repartir roles
+    game.noHints = document.getElementById('no-hints-toggle').checked;
 
     // Verificación de jugadores mínimos
     const minRequired = ic + (hasComplice ? 2 : 1);
@@ -1461,16 +1493,28 @@ function revealRole() {
     roleEl.style.animation = 'none';
 
     if (p.r === 'imp') {
-        // --- IMPOSTOR: Solo ve la pista y otros impostores ---
+        // --- IMPOSTOR ---
         roleEl.innerText = "PANCHO IMPOSTOR";
         roleEl.className = "text-7xl font-teko uppercase mb-6 leading-none text-[#ff3b3b] text-glow";
 
         const compañeros = game.list.filter(x => x.r === 'imp' && x !== p).map(x => x.n).join(', ');
 
+        // LÓGICA MODO SIN PISTAS PARA EL IMPOSTOR
+        let contenidoPista = "";
+        if (game.noHints) {
+            // Si el modo sin pistas está activo
+            contenidoPista = `<span class="text-xl text-gray-400 font-bold block uppercase italic">¡Pistas desactivadas! <br> Descubrí de qué hablan</span>`;
+        } else {
+            // Si el modo normal está activo
+            contenidoPista = `
+                <span class="text-[10px] text-red-500 block font-black tracking-widest mb-1 uppercase">Pista para mentir:</span>
+                <span class="text-3xl text-white font-black block uppercase">${game.word.h}</span>
+            `;
+        }
+
         wordEl.innerHTML = `
         <div class="text-center">
-            <span class="text-[10px] text-red-500 block font-black tracking-widest mb-1 uppercase">Pista para mentir:</span>
-            <span class="text-3xl text-white font-black block uppercase">${game.word.h}</span>
+            ${contenidoPista}
             
             ${compañeros ? `
             <div class="mt-6 pt-4 border-t border-white/10">
@@ -1527,9 +1571,23 @@ function nextPlayer() {
 
 function startDebate() {
     switchS('screen-debate');
+
+    // 1. Lógica nueva: Elegir quién empieza (solo jugadores vivos)
+    const vivos = game.list.filter(p => p.alive);
+    const elegido = vivos[Math.floor(Math.random() * vivos.length)];
+    const nameEl = document.getElementById('starter-name');
+    if (nameEl) {
+        nameEl.innerText = elegido.n;
+    }
+
+    // 2. Tu lógica original de tiempo (restaurada)
     let timeLeft = 300; // 5 minutos default
     const display = document.getElementById('debate-timer');
     const progress = document.getElementById('timer-progress');
+
+    // Limpiamos cualquier clase de alerta previa
+    display.classList.remove('text-red-500', 'animate-pulse');
+    progress.style.stroke = 'var(--arg-blue)'; 
 
     clearInterval(debateTimer);
     debateTimer = setInterval(() => {
@@ -1538,14 +1596,15 @@ function startDebate() {
         let s = timeLeft % 60;
         display.innerText = `${m}:${s < 10 ? '0' + s : s}`;
 
-        // Update circle (628 is circumference)
+        // Update circle (usando tu valor original de 628)
         const offset = 628 - (timeLeft / 300) * 628;
         progress.style.strokeDashoffset = offset;
 
         if (timeLeft <= 30) {
             display.classList.add('text-red-500');
             display.classList.add('animate-pulse');
-            progress.style.stroke = 'var(--danger)';
+            // Usamos var(--danger) si lo tenés definido, sino 'red'
+            progress.style.stroke = '#ff3b3b'; 
         }
 
         if (timeLeft <= 0) {
