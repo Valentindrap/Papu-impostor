@@ -25,6 +25,7 @@ body {
     color: #fff;
     overflow: hidden;
     height: 100vh;
+    height: 100dvh;
     user-select: none;
     margin: 0;
     padding: 0;
@@ -247,12 +248,13 @@ i[data-lucide] {
     body {
         padding: 0.5rem;
         overflow: hidden !important;
+        height: 100dvh !important;
     }
 
     main {
         max-width: 100% !important;
-        height: calc(100vh - 1rem) !important;
-        max-height: calc(100vh - 1rem) !important;
+        height: calc(100dvh - 1rem) !important;
+        max-height: calc(100dvh - 1rem) !important;
         position: relative !important;
         overflow: hidden !important;
     }
@@ -261,7 +263,7 @@ i[data-lucide] {
         border-radius: 1.5rem !important;
         overflow: hidden !important;
         height: 100% !important;
-        max-height: calc(100vh - 1rem) !important;
+        max-height: calc(100dvh - 1rem) !important;
     }
 
     .screen.active {
@@ -270,31 +272,34 @@ i[data-lucide] {
 
     /* Header más compacto */
     .screen .p-10 {
-        padding: 1.5rem !important;
+        padding: 1.25rem !important;
+        padding-bottom: 0.75rem !important;
     }
 
     .screen .pb-6 {
-        padding-bottom: 1rem !important;
+        padding-bottom: 0.75rem !important;
     }
 
     /* Títulos más pequeños en móvil */
     h1.text-6xl,
     h1.md\:text-8xl {
-        font-size: 3rem !important;
-        line-height: 1 !important;
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
     }
 
     h2.text-6xl,
     h2.md\:text-8xl,
     h2.md\:text-7xl {
-        font-size: 3.5rem !important;
+        font-size: 3rem !important;
         word-wrap: break-word !important;
+        line-height: 1.1 !important;
     }
 
     h2.text-7xl,
     h2.md\:text-9xl {
-        font-size: 4rem !important;
+        font-size: 3.5rem !important;
         word-wrap: break-word !important;
+        line-height: 1.1 !important;
     }
 
     h2, h3 {
@@ -310,8 +315,21 @@ i[data-lucide] {
         max-height: 100% !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
-        padding-bottom: 2rem !important;
+        padding-bottom: 1.5rem !important;
         -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Espaciado adicional al final para que el botón no quede tapado */
+    .flex-1.overflow-y-auto.custom-scroll > *:last-child {
+        margin-bottom: 2rem !important;
+    }
+
+    /* Asegurar que el botón de iniciar misión se vea completo */
+    .space-y-6 button:last-child,
+    button.text-4xl {
+        font-size: 1.25rem !important;
+        padding: 1rem 1.25rem !important;
+        line-height: 1.3 !important;
     }
 
     /* Input de nombre más compacto */
@@ -397,10 +415,15 @@ i[data-lucide] {
 
     /* Botones principales */
     button.py-6 {
-        padding-top: 1.25rem !important;
-        padding-bottom: 1.25rem !important;
+        padding: 1rem 1.5rem !important;
         min-height: 56px !important;
-        font-size: 1.5rem !important;
+        font-size: 1.25rem !important;
+        line-height: 1.3 !important;
+        white-space: nowrap !important;
+    }
+
+    .rounded-3xl {
+        border-radius: 1.25rem !important;
     }
 
     /* Pantalla de roles */
@@ -493,6 +516,13 @@ i[data-lucide] {
         min-height: 48px !important;
         position: relative;
         z-index: 1;
+        padding: 0.875rem 1rem !important;
+        font-size: inherit !important;
+    }
+
+    button span {
+        display: block;
+        width: 100%;
     }
 
     /* Input container */
