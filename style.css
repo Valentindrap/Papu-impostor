@@ -476,6 +476,11 @@ i[data-lucide] {
         padding-top: 1.5rem !important;
     }
 
+    #screen-end button {
+        padding: 1rem 1.5rem !important;
+        font-size: 0.875rem !important;
+    }
+
     /* Loading overlay */
     #loading-overlay .w-24.h-24 {
         width: 5rem !important;
@@ -489,17 +494,25 @@ i[data-lucide] {
 
     /* Kill overlay */
     #kill-overlay h2 {
-        font-size: 4rem !important;
+        font-size: 3.5rem !important;
+        line-height: 1.1 !important;
     }
 
     #kill-overlay p {
-        font-size: 1rem !important;
-        letter-spacing: 0.3em !important;
+        font-size: 0.875rem !important;
+        letter-spacing: 0.2em !important;
         margin-bottom: 2rem !important;
     }
 
     #kill-overlay button {
-        padding: 1rem 2rem !important;
+        padding: 0.875rem 2rem !important;
+        font-size: 0.875rem !important;
+        min-width: 200px !important;
+        white-space: nowrap !important;
+    }
+
+    #kill-overlay .p-8 {
+        padding: 2rem 1.5rem !important;
     }
 
     /* Espaciado entre secciones */
@@ -563,7 +576,8 @@ i[data-lucide] {
     }
 
     #role-result h3 {
-        font-size: 3.5rem !important;
+        font-size: 3rem !important;
+        line-height: 1.1 !important;
     }
 
     #role-result #res-word {
@@ -583,6 +597,12 @@ i[data-lucide] {
     #role-box p {
         max-width: 100% !important;
         overflow-wrap: break-word !important;
+    }
+
+    #role-result button {
+        padding: 1rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        letter-spacing: 0.1em !important;
     }
 
     /* Texto más pequeño en general */
