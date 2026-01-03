@@ -1,0 +1,57 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo con degradado -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#050507;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1f;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="blueGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#38b6ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e8acc;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Fondo -->
+  <rect width="512" height="512" fill="url(#bgGrad)" rx="80"/>
+  
+  <!-- Círculo de brillo -->
+  <circle cx="256" cy="256" r="180" fill="#38b6ff" opacity="0.1"/>
+  
+  <!-- Letra P estilizada (parecida a Among Us) -->
+  <g filter="url(#glow)">
+    <!-- Cuerpo principal de la P -->
+    <path d="M 180 140 
+             L 280 140 
+             Q 350 140 350 210
+             Q 350 280 280 280
+             L 230 280
+             L 230 400
+             L 180 400
+             Z" 
+          fill="url(#blueGlow)"/>
+    
+    <!-- Parte superior redondeada -->
+    <ellipse cx="280" cy="210" rx="45" ry="70" fill="url(#blueGlow)"/>
+    
+    <!-- Visor (ojo característico) -->
+    <ellipse cx="270" cy="200" rx="35" ry="45" fill="#38b6ff" opacity="0.3"/>
+    <ellipse cx="270" cy="195" rx="25" ry="30" fill="#050507"/>
+    <ellipse cx="275" cy="190" rx="10" ry="15" fill="#ffffff" opacity="0.8"/>
+  </g>
+  
+  <!-- Efecto de luz -->
+  <circle cx="280" cy="180" r="8" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Símbolo de alerta (pequeño) -->
+  <g transform="translate(360, 360)">
+    <circle cx="0" cy="0" r="35" fill="#ff3b3b"/>
+    <text x="0" y="12" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="40" fill="white">!</text>
+  </g>
+</svg>
