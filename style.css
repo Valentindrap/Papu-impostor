@@ -27,6 +27,7 @@ body {
     height: 100vh;
     user-select: none;
     margin: 0;
+    padding: 0;
 }
 
 .font-teko {
@@ -46,7 +47,6 @@ body {
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     flex-direction: column;
-    padding: 1rem;
 }
 
 .screen.active {
@@ -79,9 +79,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: background 0.2s;
+    gap: 0.75rem;
+    min-height: 72px;
 }
 
 .menu-row:last-child {
@@ -90,6 +92,17 @@ body {
 
 .menu-row:active {
     background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-row > div:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.menu-row select {
+    flex-shrink: 0;
+    min-width: 60px;
+    padding: 0.5rem;
 }
 
 /* Checkboxes */
@@ -103,6 +116,7 @@ body {
     cursor: pointer;
     position: relative;
     background: rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
 }
 
 .pack-checkbox:checked {
@@ -213,36 +227,367 @@ input[type="text"]::placeholder {
     }
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Asegurar que los íconos sean visibles */
+i[data-lucide] {
+    flex-shrink: 0;
+    display: inline-block;
+}
+
 /* Mobile Changes */
 @media (max-width: 640px) {
+    body {
+        padding: 0.5rem;
+        overflow: hidden !important;
+    }
+
+    main {
+        max-width: 100% !important;
+        height: calc(100vh - 1rem) !important;
+        max-height: calc(100vh - 1rem) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
     .screen {
-        padding: 1.5rem;
-        /* More breathing room */
+        border-radius: 1.5rem !important;
+        overflow: hidden !important;
+        height: 100% !important;
+        max-height: calc(100vh - 1rem) !important;
     }
 
+    .screen.active {
+        position: relative !important;
+    }
+
+    /* Header más compacto */
+    .screen .p-10 {
+        padding: 1.5rem !important;
+    }
+
+    .screen .pb-6 {
+        padding-bottom: 1rem !important;
+    }
+
+    /* Títulos más pequeños en móvil */
+    h1.text-6xl,
+    h1.md\:text-8xl {
+        font-size: 3rem !important;
+        line-height: 1 !important;
+    }
+
+    h2.text-6xl,
+    h2.md\:text-8xl,
+    h2.md\:text-7xl {
+        font-size: 3.5rem !important;
+        word-wrap: break-word !important;
+    }
+
+    h2.text-7xl,
+    h2.md\:text-9xl {
+        font-size: 4rem !important;
+        word-wrap: break-word !important;
+    }
+
+    h2, h3 {
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+    }
+
+    /* Contenedor de scroll con más espacio - SOLO el contenedor interno debe hacer scroll */
+    .flex-1.overflow-y-auto.custom-scroll {
+        overflow-y: auto !important;
+        height: auto !important;
+        max-height: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-bottom: 2rem !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Input de nombre más compacto */
+    #name-input {
+        padding: 0.875rem !important;
+        padding-right: 3.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    #name-input + button {
+        right: 0.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Tags más pequeñas */
+    #tags-container {
+        gap: 0.5rem !important;
+        min-height: 32px !important;
+    }
+
+    /* Glass panels más espaciados */
     .glass-panel {
-        border-radius: 1.25rem;
-        margin-bottom: 0.5rem;
+        border-radius: 1rem !important;
+        margin-bottom: 1rem !important;
     }
 
+    /* Headers de paneles */
+    .glass-panel > div:first-child {
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* Menu rows mejorados para móvil */
     .menu-row {
-        padding: 1.25rem 1rem;
-        /* Taller rows */
+        padding: 1rem 0.875rem !important;
+        min-height: 68px !important;
+        gap: 0.5rem !important;
     }
 
-    button {
-        min-height: 50px;
-        /* Larger touch target */
+    /* Iconos de roles más pequeños */
+    .menu-row .w-10.h-10 {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+        flex-shrink: 0;
     }
 
-    /* Adjust Timer Circle for Mobile */
+    .menu-row .w-5.h-5 {
+        width: 1.125rem !important;
+        height: 1.125rem !important;
+    }
+
+    .menu-row .w-4.h-4 {
+        width: 1rem !important;
+        height: 1rem !important;
+    }
+
+    /* Textos en menu rows */
+    .menu-row .text-sm {
+        font-size: 0.8rem !important;
+    }
+
+    .menu-row .text-\[10px\] {
+        font-size: 0.625rem !important;
+    }
+
+    /* Selects más legibles */
+    .menu-row select {
+        font-size: 0.875rem !important;
+        min-width: 50px !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+
+    /* Checkboxes de packs */
+    .pack-checkbox {
+        width: 20px !important;
+        height: 20px !important;
+        flex-shrink: 0;
+    }
+
+    .pack-checkbox:checked::after {
+        font-size: 14px !important;
+    }
+
+    /* Botones principales */
+    button.py-6 {
+        padding-top: 1.25rem !important;
+        padding-bottom: 1.25rem !important;
+        min-height: 56px !important;
+        font-size: 1.5rem !important;
+    }
+
+    /* Pantalla de roles */
+    #screen-roles .flex-1 {
+        padding: 1rem !important;
+    }
+
+    #screen-roles .w-64.h-64 {
+        width: 12rem !important;
+        height: 12rem !important;
+    }
+
+    #screen-roles .w-24.h-24 {
+        width: 5rem !important;
+        height: 5rem !important;
+    }
+
+    /* Timer de debate */
     #debate-timer {
-        font-size: 3.5rem;
-        /* Slightly smaller to fit better inside circle */
+        font-size: 4rem !important;
     }
 
-    /* Increase spacing in lists */
-    .space-y-4> :not([hidden])~ :not([hidden]) {
-        margin-top: 1rem;
+    .aspect-square {
+        max-width: 280px !important;
+    }
+
+    /* Pantalla de votación */
+    #screen-secret-vote .p-8 {
+        padding: 1.5rem !important;
+    }
+
+    #voter-options {
+        gap: 0.75rem !important;
+    }
+
+    #voter-options button {
+        font-size: 0.9rem !important;
+        padding: 1rem !important;
+        word-wrap: break-word !important;
+        white-space: normal !important;
+        text-align: center !important;
+    }
+
+    /* Pantalla final */
+    #screen-end .p-8 {
+        padding: 1.5rem !important;
+    }
+
+    #screen-end .pt-8 {
+        padding-top: 1.5rem !important;
+    }
+
+    /* Loading overlay */
+    #loading-overlay .w-24.h-24 {
+        width: 5rem !important;
+        height: 5rem !important;
+    }
+
+    #loading-overlay p {
+        font-size: 2rem !important;
+        padding: 0 1rem;
+    }
+
+    /* Kill overlay */
+    #kill-overlay h2 {
+        font-size: 4rem !important;
+    }
+
+    #kill-overlay p {
+        font-size: 1rem !important;
+        letter-spacing: 0.3em !important;
+        margin-bottom: 2rem !important;
+    }
+
+    #kill-overlay button {
+        padding: 1rem 2rem !important;
+    }
+
+    /* Espaciado entre secciones */
+    .space-y-6 > * + * {
+        margin-top: 1rem !important;
+    }
+
+    .space-y-4 > * + * {
+        margin-top: 0.75rem !important;
+    }
+
+    /* Mejorar área táctil de botones */
+    button {
+        min-height: 48px !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Input container */
+    .relative.group {
+        display: flex;
+        align-items: stretch;
+    }
+
+    /* Asegurar que todo sea scrolleable */
+    body {
+        overscroll-behavior: none !important;
+    }
+
+    main {
+        overflow: hidden !important;
+    }
+
+    .custom-scroll {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain !important;
+    }
+
+    /* Pantallas de roles y debate que NO deben scrollear */
+    #screen-roles,
+    #screen-debate {
+        overflow: hidden !important;
+    }
+
+    #screen-roles > *,
+    #screen-debate > * {
+        overflow: visible !important;
+    }
+
+    /* Role result screen */
+    #role-result .p-8 {
+        padding: 1.5rem !important;
+    }
+
+    #role-result h3 {
+        font-size: 3.5rem !important;
+    }
+
+    #role-result #res-word {
+        font-size: 1.5rem !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+        hyphens: auto !important;
+        overflow-wrap: break-word !important;
+        line-height: 1.2 !important;
+    }
+
+    #role-box {
+        padding: 1.25rem !important;
+        overflow: hidden !important;
+    }
+
+    #role-box p {
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Texto más pequeño en general */
+    .text-xs {
+        font-size: 0.65rem !important;
+    }
+
+    .text-sm {
+        font-size: 0.8rem !important;
+    }
+
+    /* Ajustes finales de padding */
+    .px-8 {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
+
+    .py-8 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+
+    .p-6 {
+        padding: 1.25rem !important;
+    }
+
+    .mb-8 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mb-10 {
+        margin-bottom: 2rem !important;
+    }
+
+    .mb-12 {
+        margin-bottom: 2.5rem !important;
     }
 }
