@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>PAPU IMPOSTOR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="flex items-center justify-center p-4">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay"
+        class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-700 text-center">
+        <div class="relative w-24 h-24 mb-8">
+            <div
+                class="absolute inset-0 border-4 border-[var(--arg-blue)] border-t-transparent rounded-full animate-spin">
+            </div>
+            <div
+                class="absolute inset-4 border-4 border-red-500 border-b-transparent rounded-full animate-[spin_1.5s_linear_infinite_reverse]">
+            </div>
+        </div>
+        <p class="font-teko text-5xl uppercase tracking-[0.2em] animate-pulse text-white">Procesando Votos</p>
+    </div>
+
+    <main class="w-full max-w-lg relative h-[850px] max-h-screen">
+
+        <!-- MENU SCREEN -->
+        <section id="screen-menu" class="screen active glass rounded-[2.5rem] flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-10 pb-6 text-center relative z-10">
+                <div
+                    class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[var(--arg-blue)]/10 to-transparent pointer-events-none">
+                </div>
+                <h1
+                    class="font-teko text-6xl md:text-8xl leading-none text-white tracking-tighter uppercase drop-shadow-[0_0_15px_rgba(56,182,255,0.5)]">
+                    Papu<br><span class="text-[var(--arg-blue)]">Impostor</span>
+                </h1>
+                <p class="text-xs font-bold tracking-[0.5em] text-gray-400 mt-2">EDICIÓN DEFINITIVA</p>
+            </div>
+
+            <div class="flex-1 overflow-y-auto custom-scroll px-8 pb-10 space-y-6">
+                <!-- Add Player -->
+                <div class="space-y-4">
+                    <div class="relative group">
+                        <input type="text" id="name-input" placeholder="Nombre del jugador..."
+                            class="w-full bg-white/5 border border-white/10 p-5 pr-16 rounded-2xl outline-none focus:border-[var(--arg-blue)] focus:bg-white/10 text-lg transition-all placeholder:text-gray-500 font-bold uppercase">
+                        <button onclick="addPlayer()"
+                            class="absolute right-3 top-3 bottom-3 bg-[var(--arg-blue)] hover:bg-white text-black px-5 rounded-xl active:scale-90 transition-all shadow-[0_0_15px_rgba(56,182,255,0.3)]">
+                            <i data-lucide="plus" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                    <div id="tags-container" class="flex flex-wrap gap-2 min-h-[40px]"></div>
+                </div>
+
+                <!-- Config -->
+                <div class="glass-panel overflow-hidden">
+                    <div class="px-5 py-3 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Configuración de
+                            Partida</span>
+                        <i data-lucide="settings-2" class="w-4 h-4 text-gray-600"></i>
+                    </div>
+
+                    <div class="menu-row hover:bg-white/5">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black uppercase tracking-wide">Papu traidor</span>
+                                <span class="text-[10px] text-gray-400">Rol de ayuda al impostor</span>
+                            </div>
+                        </div>
+                        <select id="complice-select" class="focus:outline-none">
+                            <option value="0">NO</option>
+                            <option value="1">SI</option>
+                        </select>
+                    </div>
+
+                    <div class="menu-row hover:bg-white/5">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-500">
+                                <i data-lucide="ghost" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black uppercase tracking-wide">Panchos</span>
+                                <span class="text-[10px] text-gray-400">Cantidad de enemigos</span>
+                            </div>
+                        </div>
+                        <select id="imp-count" class="focus:outline-none">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Packs -->
+                <div class="glass-panel overflow-hidden">
+                    <div class="px-5 py-3 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Temáticas</span>
+                        <i data-lucide="library" class="w-4 h-4 text-gray-600"></i>
+                    </div>
+                    <div id="packs-list" class="divide-y divide-white/5">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <div class="h-4"></div>
+                <button onclick="startGame()"
+                    class="w-full py-6 rounded-3xl btn-primary text-4xl shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(56,182,255,0.4)] relative overflow-hidden group">
+                    <span class="relative z-10">INICIAR MISIÓN</span>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500">
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- ROLE REVEAL SCREEN -->
+        <section id="screen-roles"
+            class="screen glass p-10 rounded-[2.5rem] text-center min-h-full flex flex-col justify-between items-center shadow-2xl">
+            <div class="flex-1 flex flex-col items-center justify-center w-full relative">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_0%,transparent_70%)] pointer-events-none">
+                </div>
+
+                <span class="text-sm font-bold text-gray-500 uppercase tracking-[0.3em] mb-4">SHHH </span>
+                <h2 id="role-name"
+                    class="font-teko text-6xl md:text-8xl text-white mb-8 md:mb-12 drop-shadow-md uppercase">---</h2>
+
+                <div onclick="revealRole()"
+                    class="w-64 h-64 rounded-full border-4 border-dashed border-white/10 flex flex-col items-center justify-center bg-gradient-to-br from-white/5 to-transparent hover:border-[var(--arg-blue)] hover:bg-white/10 active:scale-95 transition-all cursor-pointer group shadow-[0_0_30px_rgba(0,0,0,0.3)]">
+                    <i data-lucide="fingerprint"
+                        class="w-24 h-24 text-gray-500 group-hover:text-[var(--arg-blue)] transition-colors duration-500"></i>
+                    <span
+                        class="text-[10px] font-bold text-gray-500 uppercase mt-4 tracking-widest group-hover:text-white">Tocar</span>
+                </div>
+            </div>
+
+            <div id="role-result"
+                class="hidden absolute inset-0 bg-[#050507] z-50 flex flex-col items-center justify-center p-8 animate-[fadeIn_0.3s]">
+                <div class="w-full max-w-sm flex flex-col items-center">
+                    <h3 id="res-role" class="text-5xl md:text-7xl font-teko uppercase mb-4 md:mb-6 leading-none"></h3>
+
+                    <div id="role-box"
+                        class="bg-white/5 p-6 md:p-8 rounded-3xl w-full border border-white/10 mb-8 md:mb-12 backdrop-blur-md">
+                        <p id="res-word" class="text-3xl font-black text-white uppercase leading-tight"></p>
+                    </div>
+
+                    <button onclick="nextPlayer()"
+                        class="w-full py-6 bg-white text-black font-black rounded-2xl uppercase text-sm tracking-widest hover:bg-gray-200 transition-colors">Entendido</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEBATE SCREEN -->
+        <section id="screen-debate"
+            class="screen glass p-8 rounded-[2.5rem] text-center flex flex-col items-center justify-center shadow-2xl">
+            <h2 class="font-teko text-6xl md:text-7xl uppercase mb-8 md:mb-12 text-glow">¡Debatan!</h2>
+
+            <div
+                class="relative flex items-center justify-center mb-10 md:mb-16 w-full max-w-[300px] aspect-square mx-auto">
+                <svg class="w-full h-full rotate-[-90deg]" viewBox="0 0 288 288">
+                    <circle cx="144" cy="144" r="130" stroke="rgba(255,255,255,0.05)" stroke-width="12"
+                        fill="transparent" />
+                    <circle id="timer-progress" cx="144" cy="144" r="130" stroke="var(--arg-blue)" stroke-width="12"
+                        fill="transparent" stroke-dasharray="816" stroke-dashoffset="0" stroke-linecap="round"
+                        style="transition: stroke-dashoffset 1s linear;" />
+                </svg>
+                <div id="debate-timer"
+                    class="absolute inset-0 flex items-center justify-center font-teko text-8xl text-white drop-shadow-lg pointer-events-none">
+                    05:00</div>
+            </div>
+
+            <button onclick="startSecretVote()"
+                class="w-full py-6 bg-red-500/10 border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white font-bold rounded-2xl uppercase text-sm tracking-widest transition-all">
+                <span class="flex items-center justify-center gap-2"><i data-lucide="siren" class="w-5 h-5"></i>
+                    Reportar / Votar</span>
+            </button>
+        </section>
+
+        <!-- SECRET VOTE SCREEN -->
+        <section id="screen-secret-vote" class="screen glass p-8 rounded-[2.5rem] text-center min-h-full">
+            <div id="vote-turn-view" class="h-full flex flex-col">
+                <div class="mb-10 pt-4">
+                    <div class="inline-block px-4 py-1 bg-red-500/20 rounded-full border border-red-500/30 mb-2">
+                        <span class="text-red-500 font-bold uppercase text-[10px] tracking-widest">Sala de
+                            Votación</span>
+                    </div>
+                    <h2 class="text-xl text-gray-400 uppercase font-bold">¿Quién es el PANCHO?</h2>
+                    <h2 id="voter-name"
+                        class="font-teko text-6xl md:text-7xl text-white mt-1 uppercase leading-none drop-shadow-md text-glow">
+                        ---
+                    </h2>
+                </div>
+                <div id="voter-options" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
+            </div>
+
+            <div id="vote-summary-step" class="hidden h-full flex flex-col items-center justify-center">
+                <div
+                    class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center text-green-500 mb-8 animate-[pulse_2s_infinite]">
+                    <i data-lucide="check" class="w-12 h-12"></i>
+                </div>
+                <h2 class="font-teko text-6xl md:text-7xl text-white mb-4 uppercase leading-none">Votos Registrados</h2>
+                <p class="text-gray-400 mb-12 uppercase tracking-widest text-xs">Esperando resultados...</p>
+                <button onclick="triggerResultTension()"
+                    class="w-full py-6 bg-white text-black font-black rounded-3xl uppercase text-sm hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.3)]">Revelar
+                    Resultado</button>
+            </div>
+        </section>
+
+        <!-- END SCREEN -->
+        <section id="screen-end"
+            class="screen glass p-8 rounded-[2.5rem] text-center overflow-y-auto min-h-full flex flex-col">
+            <div class="pt-8 mb-8">
+                <h2 id="end-title" class="font-teko text-7xl md:text-9xl mb-4 leading-none">---</h2>
+                <p class="text-white/50 uppercase tracking-widest text-xs">Fin de la partida</p>
+            </div>
+            <div id="end-roles-list" class="flex-1 space-y-2 mb-10 text-left overflow-y-auto custom-scroll pr-2"></div>
+            <button onclick="resetGame()"
+                class="w-full py-6 bg-white text-black font-black rounded-3xl uppercase shadow-xl hover:bg-gray-200 transition-colors">
+                Jugar de Nuevo
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Kill Overlay -->
+    <div id="kill-overlay"
+        class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black opacity-0 pointer-events-none transition-all duration-300">
+        <!-- Animated Background -->
+        <div
+            class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--gradient-color)_0%,_transparent_70%)] opacity-30">
+        </div>
+
+        <div class="text-center p-8 relative z-10 scale-110">
+            <h2 id="kill-title"
+                class="font-teko text-7xl md:text-9xl uppercase leading-none mb-2 drop-shadow-[0_0_50px_rgba(255,59,59,0.5)]">
+            </h2>
+            <p id="kill-subtitle" class="text-white font-bold uppercase text-xl tracking-[0.5em] mb-12"></p>
+
+            <button onclick="closeKillOverlay()"
+                class="group relative px-12 py-4 bg-transparent border border-white/30 text-white font-black rounded-xl uppercase text-sm overflow-hidden transition-all hover:border-white hover:bg-white/10">
+                <span class="relative z-10">Continuar</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
